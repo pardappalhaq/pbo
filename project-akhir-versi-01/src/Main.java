@@ -2,62 +2,61 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("===== ABSTRACT 1 =====");
+        System.out.println("======================================================");
+        System.out.println("  APLIKASI KLIK - DEMONSTRASI RELASI DIAGRAM KELAS");
+        System.out.println("======================================================\n");
 
-        PartnerFutsal futsal = new PartnerFutsal(
-            "Faris",
-            20,
-            "Bogor",
-            4
-        );
-
+        // 1. GENERALISASI (INHERITANCE) & POLIMORFISME
+        System.out.println(">> 1. RELASI GENERALISASI (Inheritance)");
+        PartnerFutsal futsal = new PartnerFutsal("Faris", 20, "Bogor", 4);
         futsal.tampilkanProfil();
         futsal.hitungKecocokan();
         futsal.tampilkanStatus();
         futsal.pilihModeFutsal();
 
         System.out.println();
-
-        System.out.println("===== ABSTRACT 2 =====");
-
-        PartnerBasket basket = new PartnerBasket(
-            "Rafi",
-            21,
-            "Depok",
-            2
-        );
-
+        PartnerBasket basket = new PartnerBasket("Rafi", 21, "Depok", 2);
         basket.tampilkanProfil();
         basket.hitungKecocokan();
         basket.tampilkanStatus();
         basket.tentukanPosisiBasket();
 
-        System.out.println();
-        System.out.println("===== INTERFACE 1 =====");
+        // 2. REALISASI (INTERFACE IMPLEMENTATION)
+        System.out.println("\n>> 2. RELASI REALISASI (Interface Implementation)");
+        MatchingService servicePencari = new PencariPartner();
+        servicePencari.cariPartner();
 
-        PencariPartner pencari = new PencariPartner();
+        BookingService serviceMitra = new MitraLapangan("GOR Pajajaran", "Bogor Tengah");
+        serviceMitra.cekJadwalLapangan();
 
-        pencari.cariPartner();
-        pencari.lihatProfilPartner();
+        // 3. AGREGASI (AGGREGATION: PencariPartner o-- PartnerOlahraga)
+        System.out.println("\n>> 3. RELASI AGREGASI (Aggregation: 1 PencariPartner o-- 0..* PartnerOlahraga)");
+        PencariPartner aggregatorPencari = new PencariPartner();
+        // Objek Partner dibuat di luar, lalu didaftarkan (weak ownership / loose coupling)
+        aggregatorPencari.tambahPartner(futsal);
+        aggregatorPencari.tambahPartner(basket);
+        aggregatorPencari.cariPartner();
+        aggregatorPencari.lihatProfilPartner();
 
-        System.out.println();
+        // 4. KOMPOSISI (COMPOSITION: MitraLapangan *-- JadwalLapangan & PenggunaKlik *-- ProfilPengguna)
+        System.out.println("\n>> 4. RELASI KOMPOSISI (Composition: Strong Whole-Part)");
+        MitraLapangan mitraKomp = new MitraLapangan("Champion Futsal Arena", "Bogor Barat");
+        // JadwalLapangan dihidupkan dan dikelola langsung oleh mitraKomp
+        mitraKomp.tambahJadwal("JDW-03", "Jumat", "19:00 - 21:00", 175000);
+        mitraKomp.cekJadwalLapangan();
 
-        System.out.println("===== INTERFACE 2 =====");
+        PenggunaKlik pengguna = new PenggunaKlik("Faris Daffa");
+        System.out.println("\n[Komposisi Profil Pengguna]");
+        pengguna.getProfil().tampilkanProfil();
 
-        MitraLapangan lapangan = new MitraLapangan();
-
-        lapangan.cekJadwalLapangan();
-        lapangan.bookingLapangan();
-
-        System.out.println();
-
-        System.out.println("===== KEDUA INTERFACE =====");
-
-        PenggunaKlik pengguna = new PenggunaKlik("Faris");
-
-        pengguna.cariPartner();
-        pengguna.lihatProfilPartner();
+        // 5. ASOSIASI (ASSOCIATION: PenggunaKlik --> MitraLapangan)
+        System.out.println("\n>> 5. RELASI ASOSIASI (Association: PenggunaKlik --> MitraLapangan)");
+        pengguna.hubungkanMitra(mitraKomp);
         pengguna.cekJadwalLapangan();
         pengguna.bookingLapangan();
+
+        System.out.println("\n======================================================");
+        System.out.println("  DEMONSTRASI SELURUH RELASI SELESAI");
+        System.out.println("======================================================");
     }
 }

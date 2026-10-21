@@ -15,4 +15,20 @@ public abstract class PartnerOlahraga {
     public void tampilkanStatus() {
         System.out.println(nama + " sedang mencari partner olahraga.");
     }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public int getUsia() {
+        return usia;
+    }
+
+    public String getLokasi() {
+        return lokasi;
+    }
+
+    public int getFrekuensiOlahraga() {
+        return frekuensiOlahraga;
+    }
 }
